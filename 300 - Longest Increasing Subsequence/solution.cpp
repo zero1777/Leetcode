@@ -47,3 +47,37 @@ public:
         return lis(nums);
     }
 };
+
+// binary search
+class Solution {
+public:
+    int lower_bound(vector<int>& nums, int target) {
+        int start = 0;
+        int end = nums.size() - 1;
+        int mid = 0;
+
+        while (start < end) {
+            mid = start + (end - start) / 2;
+            if (nums[mid] < target) start = mid + 1;
+            else end = mid;
+        }
+
+        return start;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp;
+
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || nums[i] > dp.back()) {
+                dp.push_back(nums[i]);
+            } 
+            else {
+                int ret = lower_bound(dp, nums[i]);
+                dp[ret] = nums[i];
+            }
+        }
+
+        return dp.size(); 
+    }
+};
